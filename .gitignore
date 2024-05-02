@@ -11,3 +11,4 @@
 /configTool/build/
 /configTool/.venv/
 /configTool/.idea/
+/configTool/main.spec
