@@ -1,5 +1,10 @@
 import json
+import os.path
 
+# 判断配置文件是否存在
+# if not os.path.exists('config.json'):
+#     with open('config.json', 'w') as init_config:
+#         init_config.write('')
 # 从文件中读取 JSON 数据
 with open('config.json', 'r') as file:
     data = json.load(file)

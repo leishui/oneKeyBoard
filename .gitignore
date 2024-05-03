@@ -1,12 +1,7 @@
 /firmware/build/CH55xDuino.mcs51.ch552/firmware.ino.elf
-/firmware/build/CH55xDuino.mcs51.ch552/firmware.ino.hex
 /firmware/build/CH55xDuino.mcs51.ch552/firmware.ino.lk
 /firmware/build/CH55xDuino.mcs51.ch552/firmware.ino.map
 /firmware/build/CH55xDuino.mcs51.ch552/firmware.ino.mem
-/firmware/build/CH55xDuino.mcs51.ch552/onekeyboard.ino.elf
-/firmware/build/CH55xDuino.mcs51.ch552/onekeyboard.ino.lk
-/firmware/build/CH55xDuino.mcs51.ch552/onekeyboard.ino.map
-/firmware/build/CH55xDuino.mcs51.ch552/onekeyboard.ino.mem
 /configTool/dist/main/_internal/
 /configTool/build/
 /configTool/.venv/

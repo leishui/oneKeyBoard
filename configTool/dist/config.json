@@ -1,0 +1,47 @@
+{
+  "global_config": {
+    "key_mode": 2,
+    "single_key_delay": 100,
+    "group_key_delay": 255
+  },
+  "single_click_input": [
+    {
+      "type": "text",
+      "values": [
+        "guox_27"
+      ]
+    },
+    {
+      "type": "combination",
+      "values": [
+        "KEY_TAB"
+      ]
+    },
+    {
+      "type": "text",
+      "values": [
+        "mima\n"
+      ]
+    }
+  ],
+  "double_click_input": [
+    {
+      "type": "text",
+      "values": [
+        "mima"
+      ]
+    },
+    {
+      "type": "combination",
+      "values": [
+        "KEY_TAB"
+      ]
+    },
+    {
+      "type": "text",
+      "values": [
+        "mima\n"
+      ]
+    }
+  ]
+}
