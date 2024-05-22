@@ -112,11 +112,11 @@ class MainWindow(QMainWindow):
             except Exception as e:
                 QMessageBox.critical(self, "Error", f"Failed to open file: {e}")
 
-    def init_widgets(self):
+    def init_widgets(self, init_data=None):
         # 创建布局
         self.create_head_layout()
 
-        for data in self.init_data["single_click_input"]:
+        for data in init_data["single_click_input"]:
             label = QLabel("组合:" + str(len(self.comboButtons) + 1), self)
             # self.layout.insertWidget(self.layout.count() - 1, label)
             group_layout = QHBoxLayout()
@@ -264,7 +264,11 @@ class MainWindow(QMainWindow):
         h_line.setFrameShadow(QFrame.Shadow.Sunken)
 
         button_import = QPushButton("导入配置")
+        button_import.setToolTip("开发中...")
+        button_import.setDisabled(True)
         button_read = QPushButton("读取配置")
+        button_read.setToolTip("开发中...")
+        button_read.setDisabled(True)
         button_save = QPushButton("保存配置")
 
         # button_import.clicked.conect(import_config)
