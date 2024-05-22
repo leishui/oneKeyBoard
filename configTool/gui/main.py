@@ -73,9 +73,13 @@ class CustomDialog(QDialog):
 
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, init_data=None):
         super().__init__()
 
+        if init_data is None:
+            init_data = {}
+        self.init_data = init_data
+        print(init_data)
         self.serial_ports = refresh_serial_port()
         self.com_device_select = None
         self.lineEdits = []
@@ -85,7 +89,10 @@ class MainWindow(QMainWindow):
         self.setMinimumWidth(300)
         self.layout = QVBoxLayout()
 
-        self.create_widgets()
+        if self.init_data != {} and len(self.init_data["single_click_input"]) > 0:
+            self.init_widgets()
+        else:
+            self.create_widgets()
 
         self.refresh_com_devices()
 
@@ -104,6 +111,68 @@ class MainWindow(QMainWindow):
                 # 在这里可以处理JSON数据，比如显示在界面上
             except Exception as e:
                 QMessageBox.critical(self, "Error", f"Failed to open file: {e}")
+
+    def init_widgets(self):
+        # 创建布局
+        self.create_head_layout()
+
+        for data in self.init_data["single_click_input"]:
+            label = QLabel("组合:" + str(len(self.comboButtons) + 1), self)
+            # self.layout.insertWidget(self.layout.count() - 1, label)
+            group_layout = QHBoxLayout()
+            group_layout.addWidget(label)
+
+            combo_button = QPushButton(self)
+            # self.layout.insertWidget(self.layout.count() - 1, combo_button)
+            group_layout.addWidget(combo_button, stretch=1)
+            combo_button.hide()
+            combo_button.setToolTip("点击设置组合键")
+            combo_button.clicked.connect(self.open_popup)
+            self.comboButtons.append(combo_button)
+            line_edit = QLineEdit(self)
+
+            self.lineEdits.append(line_edit)
+            # self.layout.insertWidget(self.layout.count() - 1, line_edit)
+            group_layout.addWidget(line_edit, stretch=1)
+            self.layout.addLayout(group_layout)
+            radio_group = QButtonGroup(self)
+            radio_text = QRadioButton("文本模式", self)
+            radio_combo = QRadioButton("组合键模式", self)
+
+            if data["type"] == "combination":
+                text = ""
+                for keys in data["values"]:
+                    text += (keys + "\n")
+                combo_button.setText(text[:-1])
+                line_edit.setVisible(False)
+                combo_button.setVisible(True)
+                radio_combo.setChecked(True)
+            else:
+                combo_button.setText("设置组合键")
+                line_edit.setText(data["values"][0])
+                radio_text.setChecked(True)
+
+            chl = QHBoxLayout(self)
+            chl.addWidget(radio_text)
+            chl.addWidget(radio_combo)
+            radio_group.addButton(radio_text)
+            radio_group.addButton(radio_combo)
+            self.layout.addLayout(chl)
+            radio_group.buttonClicked.connect(self.on_radio_changed)
+            self.radioGroups.append(radio_group)
+
+        self.add_button_layout = QVBoxLayout()
+        self.add_button = QPushButton("添加", self)
+        self.add_button.setToolTip("点击添加组合")
+        self.add_button.clicked.connect(self.add_widgets)
+        self.add_button_layout.addStretch()
+        self.add_button_layout.addWidget(self.add_button)
+        self.layout.addLayout(self.add_button_layout)
+
+        if len(self.comboButtons) > 4:
+            self.add_button.setToolTip("最多添加5个组合")
+            self.add_button.setText("最多添加5个组合")
+            self.add_button.setDisabled(True)
 
     def create_widgets(self):
         # 创建布局
@@ -304,7 +373,20 @@ class MainWindow(QMainWindow):
 
 def main():
     app = QApplication(sys.argv)
-    window = MainWindow()
+
+    # window = MainWindow()
+
+    try:
+        with open("config.json", 'r') as file:
+            data = json.load(file)
+            # print(data)
+            window = MainWindow(init_data=data)
+        # 在这里可以处理JSON数据，比如显示在界面上
+    except Exception as e:
+        print(e)
+        window = MainWindow()
+
+    # window = MainWindow()
 
     # 创建添加按钮
     # add_button = QPushButton("Add Widget", window)
