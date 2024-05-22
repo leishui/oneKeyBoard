@@ -10,22 +10,29 @@ from keys import u_keys, all_keys
 
 
 class CustomDialog(QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, selections=None):
         super().__init__(parent)
+
+        if selections is None:
+            selections = []
 
         self.setWindowTitle("组合键")
 
         self.layout = QVBoxLayout()
 
-        label = QLabel("按键1", self)
-        self.layout.addWidget(label)
+        # label = QLabel("按键1", self)
+        # self.layout.addWidget(label)
 
         self.comboBoxes = []
-        combobox = QComboBox(self)
-        combobox.addItems(all_keys)
-        self.comboBoxes.append(combobox)
-        self.layout.addWidget(combobox)
-
+        # combobox = QComboBox(self)
+        # combobox.addItems(all_keys)
+        # self.comboBoxes.append(combobox)
+        # self.layout.addWidget(combobox)
+        if len(selections) > 0:
+            for selection in selections:
+                self.init(selection)
+        else:
+            self.init()
         bottom_layout = QHBoxLayout()
         button_box = QPushButton("OK", self)
         button_box.clicked.connect(self.accept)
@@ -36,6 +43,21 @@ class CustomDialog(QDialog):
         self.layout.addLayout(bottom_layout)
 
         self.setLayout(self.layout)
+
+    def init(self, option=None):
+        combobox = QComboBox(self)
+        combobox.addItems(all_keys)
+
+        if option is not None:
+            combobox.setCurrentText(option)
+
+        self.comboBoxes.append(combobox)
+
+        label = QLabel(self)
+        label.setText("按键" + str(len(self.comboBoxes)))
+
+        self.layout.addWidget(label)
+        self.layout.addWidget(combobox)
 
     def add(self):
         combobox = QComboBox(self)
@@ -148,7 +170,7 @@ class MainWindow(QMainWindow):
                 text = lineEdit.text().replace("\\n", "\n")
                 configData["single_click_input"].append({"type": "text", "values": [text]})
             else:
-                if self.comboButtons[i].text() == "" or self.comboButtons[i].text() == "设置组合键" :
+                if self.comboButtons[i].text() == "" or self.comboButtons[i].text() == "设置组合键":
                     continue
                 values = []
                 parts = self.comboButtons[i].text().split("\n")
@@ -262,9 +284,10 @@ class MainWindow(QMainWindow):
                     self.lineEdits[i].show()
 
     def open_popup(self):
-        dialog = CustomDialog()
         current_index = self.comboButtons.index(self.sender())
         current_button = self.comboButtons[current_index]
+        dialog = CustomDialog(
+            selections=[] if current_button.text() == "设置组合键" else current_button.text().split("\n"))
         # current_button.setText("处理中")
         selected_keys = ""
         if dialog.exec() == QDialog.DialogCode.Accepted:
