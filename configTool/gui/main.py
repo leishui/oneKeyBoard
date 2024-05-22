@@ -254,7 +254,7 @@ class MainWindow(QMainWindow):
         print(configData)
         with open('config.json', 'w') as file:
             json.dump(configData, file)
-        # save_config(configData, self.com_device_select.currentText().split(" - ")[0])
+        save_config(configData, self.com_device_select.currentText().split(" - ")[0])
 
     def create_head_layout(self):
         head_layout = QVBoxLayout()
