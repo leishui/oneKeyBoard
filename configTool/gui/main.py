@@ -148,12 +148,12 @@ class MainWindow(QMainWindow):
                 text = lineEdit.text().replace("\\n", "\n")
                 configData["single_click_input"].append({"type": "text", "values": [text]})
             else:
-                if self.comboButtons[i].text() == "" or self.comboButtons[i].text() == "设置组合键":
+                if self.comboButtons[i].text() == "" or self.comboButtons[i].text() == "设置组合键" :
                     continue
                 values = []
                 parts = self.comboButtons[i].text().split("\n")
                 for part in parts:
-                    if part == "空":
+                    if part == "无":
                         continue
                     if part == "(Space)":
                         part = " "
@@ -269,7 +269,7 @@ class MainWindow(QMainWindow):
         selected_keys = ""
         if dialog.exec() == QDialog.DialogCode.Accepted:
             for comboBox in dialog.comboBoxes:
-                if comboBox.currentText() != "":
+                if comboBox.currentText() != "无":
                     selected_keys += comboBox.currentText()
                     selected_keys += "\n"
                     # print("Selected option:", comboBox.currentText())
