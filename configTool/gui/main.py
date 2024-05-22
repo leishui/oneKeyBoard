@@ -116,7 +116,7 @@ class MainWindow(QMainWindow):
         # 创建布局
         self.create_head_layout()
 
-        for data in init_data["single_click_input"]:
+        for data in self.init_data["single_click_input"]:
             label = QLabel("组合:" + str(len(self.comboButtons) + 1), self)
             # self.layout.insertWidget(self.layout.count() - 1, label)
             group_layout = QHBoxLayout()
